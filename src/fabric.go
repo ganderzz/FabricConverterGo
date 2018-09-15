@@ -1,8 +1,7 @@
 package main
 
 import (
-	"image/color"
-	"strconv"
+	"strings"
 
 	"github.com/fogleman/gg"
 )
@@ -28,38 +27,7 @@ type fabricShape struct {
 	Y2          float64 `json:"y2"`
 }
 
-func HexToRgb(hex string) color.RGBA {
-	s := hex
-	if hex[0] == '#' {
-		s = hex[0:]
-	}
-
-	r, _ := strconv.ParseUint(s[0:2], 16, 8)
-	b, _ := strconv.ParseUint(s[2:4], 16, 8)
-	g, _ := strconv.ParseUint(s[4:6], 16, 8)
-
-	return color.RGBA{
-		A: 1,
-		R: uint8(r),
-		B: uint8(b),
-		G: uint8(g)}
-}
-
 func (s *fabricShape) Parse(ctx *gg.Context) {
-	if len(s.Fill) > 0 {
-		rgb := HexToRgb(s.Fill)
-		ctx.SetRGB(float64(rgb.R), float64(rgb.B), float64(rgb.G))
-		ctx.Fill()
-	}
-
-	if len(s.Stroke) > 0 {
-		rgb := HexToRgb(s.Stroke)
-		ctx.SetRGB(float64(rgb.R), float64(rgb.B), float64(rgb.G))
-		ctx.SetLineWidth(s.StrokeWidth)
-
-		ctx.Stroke()
-	}
-
 	switch s.ShapeType {
 	case "circle":
 		ctx.DrawCircle(s.Left, s.Top, s.Radius)
@@ -74,4 +42,15 @@ func (s *fabricShape) Parse(ctx *gg.Context) {
 		break
 	}
 
+	if len(s.Fill) > 0 && strings.ToLower(s.Fill) != "transparent" {
+		ctx.SetHexColor(s.Fill)
+		ctx.Fill()
+	}
+
+	if len(s.Stroke) > 0 && strings.ToLower(s.Stroke) != "transparent" {
+		ctx.SetHexColor(s.Stroke)
+		ctx.SetLineWidth(s.StrokeWidth)
+
+		ctx.Stroke()
+	}
 }
