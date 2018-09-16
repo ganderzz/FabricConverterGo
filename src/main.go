@@ -9,13 +9,11 @@ import (
 )
 
 func printArgList() {
-	fmt.Println("ImageConverter")
-	fmt.Println("------------------------")
-	fmt.Println("imgcvt [inputFileName] [outputFileName]")
-	fmt.Println("--extension   [png]")
+	fmt.Println("")
+	fmt.Println("fti [inputFileName] [outputFileName]")
 }
 
-func getFabricFile(path string) (*fabricBaseObject, error) {
+func getFabricJSONFromFile(path string) (*fabricBaseObject, error) {
 	file, err := os.Open(path)
 	defer file.Close()
 
@@ -40,16 +38,17 @@ func main() {
 		return
 	}
 
-	fabricObj, err := getFabricFile(args[0])
+	fabricObj, err := getFabricJSONFromFile(args[0])
 	if err != nil {
 		fmt.Printf("Could not load JSON file (%s)\n", err.Error())
 		return
 	}
 
-	dc := gg.NewContext(1000, 1000)
+	width, height := fabricObj.GetBounds()
+	context := gg.NewContext(int(width), int(height))
 	for _, obj := range fabricObj.Objects {
-		obj.Parse(dc)
+		obj.Parse(context)
 	}
 
-	dc.SavePNG(args[1])
+	context.SavePNG(args[1])
 }

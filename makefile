@@ -1,5 +1,5 @@
 all:
-		go run ./src/main.go
+		go run ./src/*.go
 
 test:
 		go run ./src/*.go input/fabric.json out.png
