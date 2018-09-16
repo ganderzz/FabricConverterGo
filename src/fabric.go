@@ -115,5 +115,7 @@ func (s *fabricShape) Parse(ctx *gg.Context) {
 		ctx.RotateAbout(-gg.Radians(s.Angle), s.Left, s.Top)
 	}
 
-	ctx.ScaleAbout(1, 1, s.Left, s.Top)
+	if s.ScaleX != 1 || s.ScaleY != 1 {
+		ctx.ScaleAbout(1, 1, s.Left, s.Top)
+	}
 }
