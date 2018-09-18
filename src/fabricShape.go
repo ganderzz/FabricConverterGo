@@ -1,45 +1,10 @@
 package main
 
 import (
-	"math"
 	"strings"
 
 	"github.com/fogleman/gg"
 )
-
-type fabricBaseObject struct {
-	Version string        `json:"version"`
-	Objects []fabricShape `json:"objects"`
-}
-
-func (f *fabricBaseObject) GetBounds() (float64, float64) {
-	minX := 0.0
-	minY := 0.0
-	maxX := math.Inf(-1)
-	maxY := math.Inf(-1)
-
-	for _, o := range f.Objects {
-		// Get the bounds of a shape--keeping in mind its rotation
-		width := math.Sin(o.Angle)*o.Height + math.Cos(o.Angle)*o.Width + o.StrokeWidth
-		height := math.Sin(o.Angle)*o.Width + math.Cos(o.Angle)*o.Height + o.StrokeWidth
-
-		minX = math.Min(o.Left, minX)
-		minY = math.Min(o.Top, minY)
-		maxX = math.Max(o.Left+width, maxX)
-		maxY = math.Max(o.Top+height, maxY)
-	}
-
-	// Doesn't make sense to make an image negative width or height
-	if maxX < 0 {
-		maxX = 0
-	}
-
-	if maxY < 0 {
-		maxY = 0
-	}
-
-	return maxX - minX, maxY - minY
-}
 
 type fabricShape struct {
 	ShapeType   string  `json:"type"`
@@ -88,7 +53,9 @@ func (s *fabricShape) drawShapeType(ctx *gg.Context) {
 	}
 }
 
+// Adds the current shape to the gg canvas
 func (s *fabricShape) Parse(ctx *gg.Context) {
+	ctx.Push()
 	if s.ScaleX != 1 || s.ScaleY != 1 {
 		ctx.ScaleAbout(s.ScaleX, s.ScaleY, s.Left, s.Top)
 	}
@@ -111,11 +78,5 @@ func (s *fabricShape) Parse(ctx *gg.Context) {
 		ctx.Fill()
 	}
 
-	if s.Angle != 0 {
-		ctx.RotateAbout(-gg.Radians(s.Angle), s.Left, s.Top)
-	}
-
-	if s.ScaleX != 1 || s.ScaleY != 1 {
-		ctx.ScaleAbout(1, 1, s.Left, s.Top)
-	}
+	ctx.Pop()
 }

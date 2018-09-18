@@ -13,7 +13,7 @@ func printArgList() {
 	fmt.Println("fti [inputFileName] [outputFileName]")
 }
 
-func getFabricJSONFromFile(path string) (*fabricBaseObject, error) {
+func getFabricJSONFromFile(path string) (*FabricBaseObject, error) {
 	file, err := os.Open(path)
 	defer file.Close()
 
@@ -21,7 +21,7 @@ func getFabricJSONFromFile(path string) (*fabricBaseObject, error) {
 		return nil, err
 	}
 
-	fabricObj := &fabricBaseObject{}
+	fabricObj := &FabricBaseObject{}
 	if json.NewDecoder(file).Decode(fabricObj) != nil {
 		return nil, err
 	}
