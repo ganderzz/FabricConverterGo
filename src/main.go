@@ -44,8 +44,8 @@ func main() {
 		return
 	}
 
-	width, height := fabricObj.GetBounds()
-	context := gg.NewContext(int(width), int(height))
+	//width, height := fabricObj.GetBounds()
+	context := gg.NewContext(800, 800)
 	for _, obj := range fabricObj.Objects {
 		obj.Parse(context)
 	}

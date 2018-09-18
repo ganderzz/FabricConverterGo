@@ -1,9 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/fogleman/gg"
+	"github.com/golang/freetype/truetype"
+	"golang.org/x/image/font"
+	"golang.org/x/image/font/gofont/goregular"
 )
 
 type fabricShape struct {
@@ -20,6 +24,8 @@ type fabricShape struct {
 	ScaleY      float64 `json:"scaleY"`
 	Radius      float64 `json:"radius"`
 	Text        string  `json:"text"`
+	FontSize    float64 `json:"fontSize"`
+	LineHeight  float64 `json:"lineHeight"`
 	X1          float64 `json:"x1"`
 	X2          float64 `json:"x2"`
 	Y1          float64 `json:"y1"`
@@ -48,9 +54,33 @@ func (s *fabricShape) drawShapeType(ctx *gg.Context) {
 		break
 
 	case text:
-		ctx.DrawString(s.Text, s.Left, s.Top)
+		fnt, err := loadFont(&truetype.Options{Size: s.FontSize})
+		if err != nil {
+			fmt.Println(err.Error())
+			break
+		}
+
+		ctx.SetFontFace(fnt)
+		ctx.SetHexColor(s.Fill)
+		ctx.DrawStringWrapped(s.Text, s.Left, s.Top, 0, 0, s.Width, s.LineHeight, gg.AlignLeft)
 		break
 	}
+}
+
+func loadFont(options *truetype.Options) (font.Face, error) {
+	font, err := truetype.Parse(goregular.TTF)
+
+	if err != nil {
+		return nil, err
+	}
+
+	o := options
+
+	if o == nil {
+		o = &truetype.Options{Size: 32}
+	}
+
+	return truetype.NewFace(font, o), nil
 }
 
 // Adds the current shape to the gg canvas

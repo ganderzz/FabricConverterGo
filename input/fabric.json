@@ -105,22 +105,10 @@
       "skewX": 0,
       "skewY": 0,
       "points": [
-        {
-          "x": 185,
-          "y": 0
-        },
-        {
-          "x": 250,
-          "y": 100
-        },
-        {
-          "x": 385,
-          "y": 170
-        },
-        {
-          "x": 0,
-          "y": 245
-        }
+        { "x": 185, "y": 0 },
+        { "x": 250, "y": 100 },
+        { "x": 385, "y": 170 },
+        { "x": 0, "y": 245 }
       ]
     },
     {
@@ -159,6 +147,52 @@
       "x2": 75,
       "y1": -50,
       "y2": 50
+    },
+    {
+      "type": "i-text",
+      "version": "2.3.6",
+      "originX": "left",
+      "originY": "top",
+      "left": 371,
+      "top": 395,
+      "width": 493.49,
+      "height": 150.06,
+      "fill": "#642fd5",
+      "stroke": null,
+      "strokeWidth": 1,
+      "strokeDashArray": null,
+      "strokeLineCap": "butt",
+      "strokeLineJoin": "miter",
+      "strokeMiterLimit": 4,
+      "scaleX": 0.5,
+      "scaleY": 0.5,
+      "angle": 5,
+      "flipX": false,
+      "flipY": false,
+      "opacity": 1,
+      "shadow": null,
+      "visible": true,
+      "clipTo": null,
+      "backgroundColor": "",
+      "fillRule": "nonzero",
+      "paintFirst": "fill",
+      "globalCompositeOperation": "source-over",
+      "transformMatrix": null,
+      "skewX": 0,
+      "skewY": 0,
+      "text": "Lorem ipsum dolor sit amet,\nconsectetur adipisicing elit,\nsed do eius",
+      "fontSize": 40,
+      "fontWeight": "",
+      "fontFamily": "helvetica",
+      "fontStyle": "normal",
+      "lineHeight": 1.16,
+      "underline": false,
+      "overline": false,
+      "linethrough": false,
+      "textAlign": "left",
+      "textBackgroundColor": "",
+      "charSpacing": 0,
+      "styles": {}
     }
   ]
 }
