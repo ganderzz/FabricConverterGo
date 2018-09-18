@@ -54,7 +54,7 @@ func (s *fabricShape) drawShapeType(ctx *gg.Context) {
 		break
 
 	case text:
-		fnt, err := loadFont(&truetype.Options{Size: s.FontSize})
+		fnt, err := loadFont(&truetype.Options{Size: s.FontSize, DPI: 100})
 		if err != nil {
 			fmt.Println(err.Error())
 			break
