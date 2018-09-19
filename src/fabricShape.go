@@ -11,25 +11,26 @@ import (
 )
 
 type fabricShape struct {
-	ShapeType   string  `json:"type"`
-	Left        float64 `json:"left"`
-	Top         float64 `json:"top"`
-	Width       float64 `json:"width"`
-	Height      float64 `json:"height"`
-	Fill        string  `json:"fill"`
-	Stroke      string  `json:"stroke"`
-	StrokeWidth float64 `json:"strokeWidth"`
-	Angle       float64 `json:"angle"`
-	ScaleX      float64 `json:"scaleX"`
-	ScaleY      float64 `json:"scaleY"`
-	Radius      float64 `json:"radius"`
-	Text        string  `json:"text"`
-	FontSize    float64 `json:"fontSize"`
-	LineHeight  float64 `json:"lineHeight"`
-	X1          float64 `json:"x1"`
-	X2          float64 `json:"x2"`
-	Y1          float64 `json:"y1"`
-	Y2          float64 `json:"y2"`
+	ShapeType   string        `json:"type"`
+	Left        float64       `json:"left"`
+	Top         float64       `json:"top"`
+	Width       float64       `json:"width"`
+	Height      float64       `json:"height"`
+	Fill        string        `json:"fill"`
+	Stroke      string        `json:"stroke"`
+	StrokeWidth float64       `json:"strokeWidth"`
+	Angle       float64       `json:"angle"`
+	ScaleX      float64       `json:"scaleX"`
+	ScaleY      float64       `json:"scaleY"`
+	Radius      float64       `json:"radius"`
+	Text        string        `json:"text"`
+	FontSize    float64       `json:"fontSize"`
+	LineHeight  float64       `json:"lineHeight"`
+	X1          float64       `json:"x1"`
+	X2          float64       `json:"x2"`
+	Y1          float64       `json:"y1"`
+	Y2          float64       `json:"y2"`
+	Objects     []fabricShape `json:"objects"`
 }
 
 const (
@@ -37,10 +38,21 @@ const (
 	rectangle = "rect"
 	line      = "line"
 	text      = "i-text"
+	group     = "group"
 )
 
 func (s *fabricShape) drawShapeType(ctx *gg.Context) {
 	switch s.ShapeType {
+	case group:
+		ctx.Push()
+		ctx.Translate(s.Left, s.Top)
+		ctx.RotateAbout(s.Angle, s.Left, s.Top)
+		for _, o := range s.Objects {
+			o.Parse(ctx)
+		}
+		ctx.Pop()
+		break
+
 	case circle:
 		ctx.DrawCircle(s.Left, s.Top, s.Radius)
 		break
