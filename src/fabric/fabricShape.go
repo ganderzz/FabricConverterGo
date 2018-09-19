@@ -1,4 +1,4 @@
-package main
+package fabric
 
 import (
 	"fmt"

@@ -1,6 +1,8 @@
-package main
+package fabric
 
-import "math"
+import (
+	"math"
+)
 
 // FabricBaseObject Parent object of the canvas JSON object
 type FabricBaseObject struct {
