@@ -50,6 +50,7 @@ func (s *fabricShape) drawShapeType(ctx *gg.Context) {
 		break
 
 	case line:
+		ctx.Translate(s.Left, s.Top)
 		ctx.DrawLine(s.X1, s.Y1, s.X2, s.Y2)
 		break
 
