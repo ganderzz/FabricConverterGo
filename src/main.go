@@ -1,11 +1,10 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
-	"os"
-	"strings"
 
 	"./server"
 	"./utils"
@@ -13,20 +12,14 @@ import (
 	"github.com/fogleman/gg"
 )
 
-func printArgList() {
-	fmt.Println("--- FTI ---")
-	fmt.Println("HTTP:")
-	fmt.Println("fti serve")
-	fmt.Println("")
-	fmt.Println("Command Line:")
-	fmt.Println("fti [inputFileName] [outputFileName]")
-	fmt.Println("")
-}
-
 func main() {
-	args := os.Args[1:]
+	serve := flag.Bool("serve", false, "Start the HTTP server.")
+	input := flag.String("input", "", "The input JSON file.")
+	output := flag.String("output", "", "The output PNG file.")
 
-	if len(args) > 0 && strings.ToLower(args[0]) == "serve" {
+	flag.Parse()
+
+	if *serve {
 		// Handle HTTP Server parsing
 		http.HandleFunc("/", server.HandleUploadController)
 
@@ -37,9 +30,9 @@ func main() {
 			log.Fatal("ListenAndServe: ", err)
 			return
 		}
-	} else if len(args) >= 2 {
+	} else if len(*input) > 0 && len(*output) > 0 {
 		// Handle command line parsing
-		fabricObj, err := utils.GetFabricJSONFromFile(args[0])
+		fabricObj, err := utils.GetFabricJSONFromFile(*input)
 		if err != nil {
 			fmt.Printf("Could not load JSON file (%s)\n", err.Error())
 			return
@@ -51,10 +44,9 @@ func main() {
 			obj.Parse(context)
 		}
 
-		context.SavePNG(args[1])
+		context.SavePNG(*output)
 	} else {
 		fmt.Println("Invalid arguments.")
-		printArgList()
 		return
 	}
 }
