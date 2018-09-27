@@ -2,6 +2,8 @@ package fabric
 
 import (
 	"fmt"
+	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/fogleman/gg"
@@ -87,13 +89,31 @@ func loadFont(options *truetype.Options) (font.Face, error) {
 		return nil, err
 	}
 
-	o := options
-
-	if o == nil {
-		o = &truetype.Options{Size: 32}
+	if options == nil {
+		options = &truetype.Options{Size: 32}
 	}
 
-	return truetype.NewFace(font, o), nil
+	return truetype.NewFace(font, options), nil
+}
+
+/**
+ * setColor
+ * Parses a string color (rgba or hex), and applies that color to the drawing context
+ */
+func setColor(ctx *gg.Context, color string) {
+	rgbRegex, _ := regexp.Compile("rgb\\(\\s*(\\d{1,3})\\s*,\\s*(\\d{1,3})\\s*,\\s*(\\d{1,3})\\s*\\)")
+	hexRegex, _ := regexp.Compile("^#")
+
+	if hexRegex.MatchString(color) {
+		ctx.SetHexColor(color)
+	} else if rgbRegex.MatchString(color) {
+		rgb := rgbRegex.FindStringSubmatch(color)
+		r, _ := strconv.Atoi(rgb[1])
+		g, _ := strconv.Atoi(rgb[2])
+		b, _ := strconv.Atoi(rgb[3])
+
+		ctx.SetRGB255(r, g, b)
+	}
 }
 
 // Adds the current shape to the gg canvas
@@ -110,14 +130,14 @@ func (s *fabricShape) Parse(ctx *gg.Context) {
 	s.drawShapeType(ctx)
 
 	if len(s.Stroke) > 0 && strings.ToLower(s.Stroke) != "transparent" {
-		ctx.SetHexColor(s.Stroke)
+		setColor(ctx, s.Stroke)
 		ctx.SetLineWidth(s.StrokeWidth)
 
 		ctx.StrokePreserve()
 	}
 
 	if len(s.Fill) > 0 && strings.ToLower(s.Fill) != "transparent" {
-		ctx.SetHexColor(s.Fill)
+		setColor(ctx, s.Fill)
 		ctx.Fill()
 	}
 
