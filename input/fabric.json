@@ -1,9 +1,9 @@
 {
-  "version": "2.3.6",
+  "version": "2.4.0",
   "objects": [
     {
       "type": "rect",
-      "version": "2.3.6",
+      "version": "2.4.0",
       "originX": "left",
       "originY": "top",
       "left": 508,
@@ -38,7 +38,7 @@
     },
     {
       "type": "circle",
-      "version": "2.3.6",
+      "version": "2.4.0",
       "originX": "left",
       "originY": "top",
       "left": 219,
@@ -74,7 +74,7 @@
     },
     {
       "type": "polygon",
-      "version": "2.3.6",
+      "version": "2.4.0",
       "originX": "left",
       "originY": "top",
       "left": 372,
@@ -113,7 +113,7 @@
     },
     {
       "type": "line",
-      "version": "2.3.6",
+      "version": "2.4.0",
       "originX": "left",
       "originY": "top",
       "left": 205,
@@ -150,7 +150,7 @@
     },
     {
       "type": "i-text",
-      "version": "2.3.6",
+      "version": "2.4.0",
       "originX": "left",
       "originY": "top",
       "left": 371,
@@ -196,11 +196,11 @@
     },
     {
       "type": "group",
-      "version": "2.3.6",
+      "version": "2.4.0",
       "originX": "left",
       "originY": "top",
-      "left": 48,
-      "top": 67,
+      "left": 126,
+      "top": 123,
       "width": 81,
       "height": 81,
       "fill": "#000000",
@@ -229,7 +229,7 @@
       "objects": [
         {
           "type": "rect",
-          "version": "2.3.6",
+          "version": "2.4.0",
           "originX": "left",
           "originY": "top",
           "left": -40.5,
@@ -264,7 +264,7 @@
         },
         {
           "type": "circle",
-          "version": "2.3.6",
+          "version": "2.4.0",
           "originX": "left",
           "originY": "top",
           "left": -40.5,

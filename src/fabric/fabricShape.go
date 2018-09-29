@@ -13,26 +13,27 @@ import (
 )
 
 type fabricShape struct {
-	ShapeType   string        `json:"type"`
-	Left        float64       `json:"left"`
-	Top         float64       `json:"top"`
-	Width       float64       `json:"width"`
-	Height      float64       `json:"height"`
-	Fill        string        `json:"fill"`
-	Stroke      string        `json:"stroke"`
-	StrokeWidth float64       `json:"strokeWidth"`
-	Angle       float64       `json:"angle"`
-	ScaleX      float64       `json:"scaleX"`
-	ScaleY      float64       `json:"scaleY"`
-	Radius      float64       `json:"radius"`
-	Text        string        `json:"text"`
-	FontSize    float64       `json:"fontSize"`
-	LineHeight  float64       `json:"lineHeight"`
-	X1          float64       `json:"x1"`
-	X2          float64       `json:"x2"`
-	Y1          float64       `json:"y1"`
-	Y2          float64       `json:"y2"`
-	Objects     []fabricShape `json:"objects"`
+	ShapeType     string        `json:"type"`
+	Left          float64       `json:"left"`
+	Top           float64       `json:"top"`
+	Width         float64       `json:"width"`
+	Height        float64       `json:"height"`
+	Fill          string        `json:"fill"`
+	Stroke        string        `json:"stroke"`
+	StrokeWidth   float64       `json:"strokeWidth"`
+	Angle         float64       `json:"angle"`
+	ScaleX        float64       `json:"scaleX"`
+	ScaleY        float64       `json:"scaleY"`
+	Radius        float64       `json:"radius"`
+	Text          string        `json:"text"`
+	FontSize      float64       `json:"fontSize"`
+	LineHeight    float64       `json:"lineHeight"`
+	X1            float64       `json:"x1"`
+	X2            float64       `json:"x2"`
+	Y1            float64       `json:"y1"`
+	Y2            float64       `json:"y2"`
+	StrokeLineCap string        `json:"strokeLineCap"`
+	Objects       []fabricShape `json:"objects"`
 }
 
 const (
@@ -49,14 +50,14 @@ func (s *fabricShape) drawShapeType(ctx *gg.Context) {
 		ctx.Push()
 		ctx.Translate(s.Left, s.Top)
 		ctx.RotateAbout(s.Angle, s.Left, s.Top)
-		for _, o := range s.Objects {
-			o.Parse(ctx)
+		for i := len(s.Objects) - 1; i >= 0; i-- {
+			s.Objects[i].Parse(ctx)
 		}
 		ctx.Pop()
 		break
 
 	case circle:
-		ctx.DrawCircle(s.Left, s.Top, s.Radius)
+		ctx.DrawCircle(s.Left+s.Radius, s.Top+s.Radius, s.Radius)
 		break
 
 	case rectangle:
@@ -65,6 +66,7 @@ func (s *fabricShape) drawShapeType(ctx *gg.Context) {
 
 	case line:
 		ctx.Translate(s.Left, s.Top)
+		setLineCap(ctx, *s)
 		ctx.DrawLine(s.X1, s.Y1, s.X2, s.Y2)
 		break
 
@@ -78,6 +80,14 @@ func (s *fabricShape) drawShapeType(ctx *gg.Context) {
 		ctx.SetFontFace(fnt)
 		ctx.SetHexColor(s.Fill)
 		ctx.DrawStringWrapped(s.Text, s.Left, s.Top, 0, 0, s.Width, s.LineHeight, gg.AlignLeft)
+		break
+	}
+}
+
+func setLineCap(ctx *gg.Context, shape fabricShape) {
+	switch strings.ToLower(shape.StrokeLineCap) {
+	case "butt":
+		ctx.SetLineCapButt()
 		break
 	}
 }
