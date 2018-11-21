@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"os"
 
-	"../fabric"
+	"github.com/ganderzz/FabricConverterGo/src/fabric"
 )
 
 // ConvertFileToFabricJSON Convert file to JSON object
