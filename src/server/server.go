@@ -7,7 +7,8 @@ import (
 	"log"
 	"net/http"
 
-	"../utils"
+	"github.com/ganderzz/FabricConverterGo/src/utils"
+
 	"github.com/fogleman/gg"
 )
 
